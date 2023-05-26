@@ -1,5 +1,18 @@
 #!/bin/bash
 
+folder_path=$(find / -type d -name "koth" 2>/dev/null)
+
+# Check if the folder exists
+if [[ ! -d "$folder_path" ]]; then
+  echo "Error: koth folder not found."
+  exit 1
+fi
+
+# Grant executable permissions to all files in the folder and its subdirectories
+find "$folder_path" -type f -exec chmod +rx {} \;
+
+echo "Executable permissions granted to all files in the koth folder and its subdirectories."
+
 script_dir="/gameover"
 
 # Check if the directory exists
