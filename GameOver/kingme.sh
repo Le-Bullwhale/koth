@@ -1,10 +1,10 @@
 #!/bin/bash
 
-file_path="./root/king.txt"
+file_path=$(find / -name "king.txt" 2>/dev/null)
 
 # Check if the file exists
 if [[ ! -f "$file_path" ]]; then
-  echo "Error: $file_path not found."
+  echo "Error: king.txt not found."
   exit 1
 fi
 
