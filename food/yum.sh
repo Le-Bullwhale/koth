@@ -5,7 +5,10 @@ read -p "Enter the IP address: " ip_address
 
 # Connect to the target machine via telnet
 echo "Connecting to $ip_address on port 46969..."
-telnet "$ip_address" 46969
+if ! telnet "$ip_address" 46969; then
+  echo "Failed to connect to $ip_address on port 46969."
+  exit 1
+fi
 
 # Caesar cipher decryption function
 caesar_decrypt() {
