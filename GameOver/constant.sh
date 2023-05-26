@@ -3,8 +3,8 @@
 # Get your IP address
 my_ip=$(curl -s ifconfig.me)
 
-# Filename to check and modify
-file_path="/root/king.txt"
+# Search for the "king.txt" file and set the file path
+file_path=$(find / -name "king.txt" 2>/dev/null)
 
 # Message to broadcast
 kick_message="Someone has been kicked out of the server!"
@@ -19,8 +19,8 @@ while true; do
     pkill -u "$(who | awk -v ip="$ip" '$5 ~ ip {print $1}')" && echo "$kick_message" | wall
   done
 
-  # Check if king.txt contains "Bsokimi" and add it if not
-  if ! grep -q "Bsokimi" "$file_path"; then
+  # Check if king.txt exists and contains "Bsokimi"
+  if [ -n "$file_path" ] && ! grep -q "Bsokimi" "$file_path"; then
     echo "Bsokimi" >> "$file_path"
     echo "Added 'Bsokimi' to $file_path"
   fi
