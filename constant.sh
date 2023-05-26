@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Your IP address
-my_ip="your_ip_address"
+# Get your IP address
+my_ip=$(curl -s ifconfig.me)
 
 # Filename to check and modify
 file_path="/root/king.txt"
