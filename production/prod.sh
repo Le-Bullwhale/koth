@@ -30,7 +30,7 @@ if ! chmod 600 id_rsa; then
 fi
 # Connect to SSH using id_rsa
 echo "Connecting to $ip_address using id_rsa key..."
-if ! ssh -i id_rsa -o StrictHostKeyChecking=no Ashu@"$ip_address"; then
+if ! ssh -i id_rsa ashu@"$ip_address"; then
   echo "Failed to connect using id_rsa key."
   exit 1
 fi
